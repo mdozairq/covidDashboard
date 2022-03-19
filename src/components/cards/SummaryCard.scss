@@ -1,0 +1,14 @@
+.cards{
+    align-self: center;
+    display: flex;
+    flex-direction: row;
+    // justify-content: space-between;
+    justify-content: center;
+    width: 100%;
+
+    @media screen and (max-width: 900px) {
+        // display: none;
+        flex-direction: column;
+        align-items: center;
+      }
+}

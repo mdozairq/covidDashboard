@@ -1,0 +1,13 @@
+.cardcover{
+    display: flex;
+    flex-direction: column;
+    animation-delay: 750ms;
+    background-color: #fff;
+    width: 200px;
+    border-radius: 5%;
+    box-shadow: 0 8px 32px 0 rgba(145, 146, 153, 0.37);
+    margin: 20px;
+    padding: 20px;
+    justify-content: center;
+    box-shadow: 12px gray;
+}

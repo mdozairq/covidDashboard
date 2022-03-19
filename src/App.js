@@ -1,23 +1,26 @@
-import logo from './logo.svg';
+import React,{useEffect} from "react";
 import './App.css';
+import { useSelector, useDispatch } from "react-redux";
+import { getCountryData, getSummary } from "./redux/action/action";
+import SummaryCard from "./components/cards";
+import Filters from "./components/Filters/Filters";
+import EnhancedTable from "./components/Table/Table";
+import Chart from "./components/charts/Chart";
 
 function App() {
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getSummary());
+  }, [dispatch]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+       <h1>Covid19 Tracker Dashboard</h1>
+       <Filters/>
+       <SummaryCard/>
+       <EnhancedTable/>
+       <Chart/>
     </div>
   );
 }
