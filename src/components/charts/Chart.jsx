@@ -1,39 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
-import { Line, Bar } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import Paper from '@mui/material/Paper';
-import {CategoryScale} from 'chart.js'
+import { CategoryScale } from 'chart.js'
 import Charts from 'chart.js/auto'
 Charts.register(CategoryScale)
-// import { fetchcountryCases } from '../../api';
-// { data: { confirmed, recovered, deaths }, country }
+
+
 const Chart = () => {
-    // const [countryCases, setcountryCases] = useState({});
 
     const countryCases = useSelector(state => state.countryData);
-    console.log("CC: ",countryCases);
-
-
-    // const barChart = (
-    //     confirmed ? (
-    //         <Bar
-    //             data={{
-    //                 labels: ['Infected', 'Recovered', 'Deaths'],
-    //                 datasets: [
-    //                     {
-    //                         label: 'People',
-    //                         backgroundColor: ['rgba(0, 0, 255, 0.5)', 'rgba(0, 255, 0, 0.5)', 'rgba(255, 0, 0, 0.5)'],
-    //                         data: [confirmed.value, recovered.value, deaths.value],
-    //                     },
-    //                 ],
-    //             }}
-    //             options={{
-    //                 legend: { display: false },
-    //                 title: { display: true, text: `Current state in ${country}` },
-    //             }}
-    //         />
-    //     ) : null
-    // );
 
     const lineChart = (
         countryCases[0] ? (
@@ -43,14 +19,22 @@ const Chart = () => {
                     labels: countryCases.map((data) => new Date(data.Date).toLocaleDateString()),
                     datasets: [{
                         data: countryCases.map((data) => data.Confirmed),
-                        label: 'Infected',
-                        borderColor: '#3333ff',
+                        label: 'Confirmed',
+                        borderColor: 'red',
                         fill: true,
-                    }, {
+                    },
+                    {
+                        data: countryCases.map((data) => data.Recovered > 0 ? data.Confirmed - (data.Deaths + data.Recovered) : data.Deaths),
+                        label: 'Active',
+                        borderColor: '#3333ff',
+                        backgroundColor: 'rgba(36, 46, 177, 0.3)',
+                        fill: true,
+                    },
+                    {
                         data: countryCases.map((data) => data.Deaths),
                         label: 'Deaths',
-                        borderColor: 'red',
-                        backgroundColor: 'rgba(255, 0, 0, 0.5)',
+                        borderColor: '#6c757d',
+                        backgroundColor: 'rgba(58, 58, 59, 0.3)',
                         fill: true,
                     }, {
                         data: countryCases.map((data) => data.Recovered),
@@ -66,9 +50,9 @@ const Chart = () => {
     );
 
     return (
-        <div style={{justifyContent:"center",margin:"5%"}}>
-            <Paper sx={{ width: '100%', mb: 2 }}>
-                {/* {country ? barChart : lineChart} */}
+        <div style={{ justifyContent: "center", margin: "5%", }}>
+            <Paper sx={{ width: '95%', mb: 2, p: 2 }}>
+                {countryCases[0] ? <h2>{countryCases[0].Country}</h2> : null}
                 {lineChart}
             </Paper>
         </div>

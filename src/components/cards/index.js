@@ -1,20 +1,31 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import Card from './card/Card'
 import './SummaryCard.scss'
 
-const SummaryCard = () => {
+const SummaryCard = ({ value }) => {
+    const [Country, setCountry] = useState({})
     const summary = useSelector(state => state.summaryData);
-    console.log("Card:", summary);
+
+    useEffect(() => {
+        let country;
+        if (value === 'Global')
+            country = summary.Global
+        else
+            country = Object.keys(summary).length && summary.Countries.find(a => a.Country === value);
+        setCountry(country)
+    }, [value, summary])
+
+
 
     return (
         <>
             {
-                Object.keys(summary).length &&
+                Country &&
                 <div className='cards'>
-                    <Card pastRecord={summary.Global.TotalConfirmed} newRecord={summary.Global.NewConfirmed} lastUpdate={summary.Global.Date} title="Confirmed" />
-                    <Card pastRecord={summary.Global.TotalConfirmed - summary.Global.TotalDeaths} newRecord={summary.Global.NewConfirmed - summary.Global.NewDeaths} lastUpdate={summary.Global.Date} title="Recovered" />
-                    <Card pastRecord={summary.Global.TotalDeaths} newRecord={summary.Global.NewDeaths} lastUpdate={summary.Global.Date} title="Deceased" />
+                    <Card pastRecord={Country.TotalConfirmed} newRecord={Country.NewConfirmed} lastUpdate={Country.Date} title="Confirmed" />
+                    <Card pastRecord={Country.TotalConfirmed - Country.TotalDeaths} newRecord={Country.NewConfirmed - Country.NewDeaths} lastUpdate={Country.Date} title="Recovered" />
+                    <Card pastRecord={Country.TotalDeaths} newRecord={Country.NewDeaths} lastUpdate={Country.Date} title="Deceased" />
                 </div>
             }
         </>
